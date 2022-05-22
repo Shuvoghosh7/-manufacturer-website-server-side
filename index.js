@@ -23,8 +23,8 @@ async function run(){
         console.log("Connect DB")
         app.get('/get-parts', async (req, res) => {
             
-            const services = await partsCollection.find({}).toArray()
-            res.send(services)
+            const result = await partsCollection.find({}).toArray()
+            res.send(result)
         })
 
 
