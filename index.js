@@ -21,7 +21,7 @@ async function run(){
         const partsCollection = client.db('parts-manufacturer').collection('parts');
 
         console.log("Connect DB")
-        app.get('/get-service', async (req, res) => {
+        app.get('/get-parts', async (req, res) => {
             
             const services = await partsCollection.find({}).toArray()
             res.send(services)
