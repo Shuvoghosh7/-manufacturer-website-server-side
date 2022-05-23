@@ -19,6 +19,7 @@ async function run(){
     try{
         await client.connect();
         const partsCollection = client.db('parts-manufacturer').collection('parts');
+        const orderCollection= client.db('parts-manufacturer').collection('orders');
 
         console.log("Connect DB")
         app.get('/get-parts', async (req, res) => {
@@ -32,6 +33,14 @@ async function run(){
             const parts = await partsCollection.findOne(query);
             res.send(parts)
           });
+
+          //perses order
+          app.post('/add-orders', async (req, res) => {
+            const data = req.body;
+            const result = await orderCollection.insertOne(data)
+            res.send(result)
+           
+        })
 
 
     }
