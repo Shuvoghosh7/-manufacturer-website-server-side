@@ -54,7 +54,7 @@ async function run() {
       res.send(result)
     })
 
-    app.get('/get-parts/:id', verifyJwt, async (req, res) => {
+    app.get('/get-parts/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const parts = await partsCollection.findOne(query);
@@ -103,7 +103,21 @@ async function run() {
       const isAdmin = user.role === 'admin';
       res.send({ admin: isAdmin })
     })
-
+   // my order
+   app.get('/orders', async (req, res) => {
+    const email = req.query.email
+    const query = { email: email };
+    const cursor = orderCollection.find(query);
+    const result = await cursor.toArray();
+    res.send(result)
+  })
+  // Delete orders
+  app.delete('/orders/:id', async (req, res) => {
+    const id = req.params.id
+    const query = { _id: ObjectId(id) };
+    const result = await orderCollection.deleteOne(query)
+    res.send(result)
+  })
   }
   finally {
 
