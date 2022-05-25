@@ -36,6 +36,7 @@ async function run() {
     const partsCollection = client.db('parts-manufacturer').collection('parts');
     const orderCollection = client.db('parts-manufacturer').collection('orders');
     const userCollection = client.db('parts-manufacturer').collection('users');
+    const reviewCollection = client.db('parts-manufacturer').collection('review');
 
     console.log("Connect DB")
     // verifyAdmin function
@@ -116,6 +117,17 @@ async function run() {
     const id = req.params.id
     const query = { _id: ObjectId(id) };
     const result = await orderCollection.deleteOne(query)
+    res.send(result)
+  })
+   //add rewiew
+   app.post('/review', async(req,res)=>{
+    const review=req.body
+    const result=await reviewCollection.insertOne(review)
+    res.send(result)
+  });
+  // get review
+  app.get('/get-review', async (req, res) => {
+    const result = await reviewCollection.find({}).toArray()
     res.send(result)
   })
   }
