@@ -57,7 +57,12 @@ async function run() {
       const result = await partsCollection.find({}).toArray()
       res.send(result)
     })
-
+    // add parts
+    app.post('/add-parts',verifyJwt, async(req,res)=>{
+      const parts=req.body
+      const result=await partsCollection.insertOne(parts)
+      res.send(result)
+    });
     app.get('/get-parts/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
