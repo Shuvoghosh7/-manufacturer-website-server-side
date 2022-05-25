@@ -69,6 +69,13 @@ async function run() {
       const parts = await partsCollection.findOne(query);
       res.send(parts)
     });
+    // Delete parts
+    app.delete('/detete-parts/:id', async (req, res) => {
+      const id = req.params.id
+      const query = { _id: ObjectId(id) };
+      const result = await partsCollection.deleteOne(query)
+      res.send(result)
+    })
 
     //perses order
     app.post('/add-orders', async (req, res) => {
