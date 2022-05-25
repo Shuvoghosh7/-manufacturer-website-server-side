@@ -37,6 +37,7 @@ async function run() {
     const orderCollection = client.db('parts-manufacturer').collection('orders');
     const userCollection = client.db('parts-manufacturer').collection('users');
     const reviewCollection = client.db('parts-manufacturer').collection('review');
+    const profileCollection = client.db('parts-manufacturer').collection('profile');
 
     console.log("Connect DB")
     // verifyAdmin function
@@ -128,6 +129,21 @@ async function run() {
   // get review
   app.get('/get-review', async (req, res) => {
     const result = await reviewCollection.find({}).toArray()
+    res.send(result)
+  })
+
+  // my profile
+  app.post('/profile',verifyJwt, async(req,res)=>{
+    const profile=req.body
+    const result=await profileCollection.insertOne(profile)
+    res.send(result)
+  });
+  // get my profile data
+  app.get('/get-profile', async (req, res) => {
+    const email = req.query.email
+    const query = { email: email };
+    const cursor = profileCollection.find(query);
+    const result = await cursor.toArray();
     res.send(result)
   })
   }
