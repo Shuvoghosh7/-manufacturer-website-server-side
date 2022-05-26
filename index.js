@@ -142,6 +142,12 @@ async function run() {
       const result = await orderCollection.deleteOne(query)
       res.send(result)
     })
+    //get all order
+    app.get('/get-order', verifyJwt, async (req, res) => {
+      const users = await orderCollection.find().toArray();
+      res.send(users);
+    });
+  
     //add rewiew
     app.post('/review', async (req, res) => {
       const review = req.body
