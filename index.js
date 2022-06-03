@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000;
 const app = express()
 
 //meddle ware
-app.use(cors({origin: 'computer-parts-manufactu-ed97b.firebaseapp.com'}))
+app.use(cors({origin: 'https://computer-parts-manufactu-ed97b.web.app/'}))
 app.use(express.json()) //use to get data req.body
 
 
