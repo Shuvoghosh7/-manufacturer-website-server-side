@@ -8,9 +8,8 @@ const port = process.env.PORT || 5000;
 const app = express()
 
 //meddle ware
-app.use(cors({origin:'https://computer-parts-manufactu-ed97b.web.app/'}))
+app.use(cors({credentials: true,crossDomain: true,origin: ["https://computer-parts-manufactu-ed97b.web.app", "http://localhost:3000"]}))
 app.use(express.json()) //use to get data req.body
-
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.yr9id.mongodb.net/?retryWrites=true&w=majority`;
