@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000;
 const app = express()
 
 //meddle ware
-app.use(cors({credentials: true,crossDomain: true,origin: ["https://computer-parts-manufactu-ed97b.web.app", "http://localhost:3000"]}))
+app.use(cors({ credentials: true, crossDomain: true, origin: ["https://computer-parts-manufactu-ed97b.web.app", "http://localhost:3000"] }))
 app.use(express.json()) //use to get data req.body
 
 
@@ -57,9 +57,9 @@ async function run() {
       res.send(result)
     })
     // add parts
-    app.post('/add-parts',verifyJwt, async(req,res)=>{
-      const parts=req.body
-      const result=await partsCollection.insertOne(parts)
+    app.post('/add-parts', verifyJwt, async (req, res) => {
+      const parts = req.body
+      const result = await partsCollection.insertOne(parts)
       res.send(result)
     });
     app.get('/get-parts/:id', async (req, res) => {
@@ -146,7 +146,7 @@ async function run() {
       const users = await orderCollection.find().toArray();
       res.send(users);
     });
-  
+
     //add rewiew
     app.post('/review', async (req, res) => {
       const review = req.body
@@ -187,10 +187,10 @@ async function run() {
     });
 
     // update booking for payment
-    app.patch('/order/:id', verifyJwt, async(req, res) =>{
-      const id  = req.params.id;
+    app.patch('/order/:id', verifyJwt, async (req, res) => {
+      const id = req.params.id;
       const payment = req.body;
-      const filter = {_id: ObjectId(id)};
+      const filter = { _id: ObjectId(id) };
       const updatedDoc = {
         $set: {
           paid: true,
@@ -202,6 +202,31 @@ async function run() {
       const updatedBooking = await orderCollection.updateOne(filter, updatedDoc);
       res.send(updatedBooking);
     })
+    //update profile
+    app.put("/update-profile/:id", async (req, res) => {
+      const id = req.params.id;
+      const data = req.body;
+      console.log("from update api", data);
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+
+      const updateDoc = {
+        $set: {
+          education:data.education,
+          location:data.location,
+          phoneNumber:data.phoneNumber,
+          LinkedInLink:data.LinkedInLink,
+        },
+      };
+
+      const result = await profileCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+
+      res.send(result);
+    });
   }
   finally {
 
