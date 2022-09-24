@@ -68,6 +68,29 @@ async function run() {
       const parts = await partsCollection.findOne(query);
       res.send(parts)
     });
+    //eidt parts
+    app.put('/edit-parts/:id',async(req,res)=>{
+      const id = req.params.id;
+      const data = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          pname:data.pname,
+          available_quantity:data.available_quantity,
+          price_per_unit:data.price_per_unit,
+        },
+      };
+
+      const result = await partsCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+
+      res.send(result);
+    })
+    
     // Delete parts
     app.delete('/detete-parts/:id', async (req, res) => {
       const id = req.params.id
