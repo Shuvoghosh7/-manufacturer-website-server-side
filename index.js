@@ -39,6 +39,7 @@ async function run() {
     const reviewCollection = client.db('parts-manufacturer').collection('review');
     const profileCollection = client.db('parts-manufacturer').collection('profile');
     const paymentCollection = client.db('parts-manufacturer').collection('payment');
+    const teamCollection = client.db('parts-manufacturer').collection('teams');
 
     console.log("Connect DB")
     // verifyAdmin function
@@ -62,6 +63,7 @@ async function run() {
       const result = await partsCollection.insertOne(parts)
       res.send(result)
     });
+   
     app.get('/get-parts/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
@@ -150,7 +152,6 @@ async function run() {
       res.send(result)
     })
     //single order
-
     app.get('/order/:id', verifyJwt, async (req, res) => {
       const id = req.params.id
       const query = { _id: ObjectId(id) }
@@ -169,7 +170,6 @@ async function run() {
       const users = await orderCollection.find().toArray();
       res.send(users);
     });
-
     //add rewiew
     app.post('/review', async (req, res) => {
       const review = req.body
@@ -248,6 +248,18 @@ async function run() {
       );
 
       res.send(result);
+    });
+    //add team member
+    app.post('/add-team', verifyJwt, async (req, res) => {
+      const team = req.body
+      const result = await teamCollection.insertOne(team)
+      res.send(result)
+    });
+
+    //get all team member
+    app.get('/get-team', async (req, res) => {
+      const result = await teamCollection.find({}).toArray()
+      res.send(result)
     });
   }
   finally {
